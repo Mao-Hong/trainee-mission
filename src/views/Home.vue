@@ -1,5 +1,5 @@
 <template>
-  <el-form class="home" label-width="80px">
+  <el-form class="home" label-width="80px" :model="formData">
     <activityName :value="formData.name" @change="nameChange"  />
     <activityArea :value="formData.area" @change="areaChange"/>
     <activityTime :value="formData.time" @change="timeChange"/>

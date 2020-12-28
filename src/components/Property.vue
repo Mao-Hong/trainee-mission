@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="活动性质">
+  <el-form-item label="活动性质" prop="property" :rules="proRules">
     <el-checkbox-group v-model="typeValue">
       <el-checkbox
         v-for="list in checkedlist"
@@ -22,7 +22,13 @@ export default {
         { label: '地推活动', value: 'option2' },
         { label: '线下主题活动', value: 'option3' },
         { label: '单纯品牌曝光', value: 'option4' }
-      ]
+      ],
+      proRules: {
+        type: 'array',
+        required: true,
+        message: '请至少选择一个活动性质',
+        trigger: 'change'
+      }
     }
   },
   props: {

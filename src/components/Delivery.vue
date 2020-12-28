@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="即时配送">
+  <el-form-item label="即时配送" prop="delive">
     <el-switch v-model="deliveryValue"></el-switch>
   </el-form-item>
 </template>

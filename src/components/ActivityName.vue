@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="活动名称">
+  <el-form-item label="活动名称" prop="name" :rules="nameRules">
     <el-input v-model="nameValue"></el-input>
   </el-form-item>
 </template>
@@ -31,7 +31,10 @@ export default {
   },
   data () {
     return {
-      name: ''
+      nameRules: [
+        { required: true, message: '请输入活动名称', trigger: 'blur' },
+        { min: 3, max: 10, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+      ]
     }
   }
 }

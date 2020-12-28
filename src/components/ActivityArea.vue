@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="活动区域">
+  <el-form-item label="活动区域" prop="area" :rules="areaRules">
     <el-select v-model="regionValue" placeholder="请选择活动区域">
       <el-option
         v-for="item in options"
@@ -15,13 +15,15 @@
 export default {
   data () {
     return {
-      // props:[value],
       region: '',
       options: [
         { label: '区域一', value: 'Area1' },
         { label: '区域二', value: 'Area2' },
         { label: '区域三', value: 'Area3' }
-      ]
+      ],
+      areaRules: {
+        required: true, message: '请选择活动区域', trigger: 'change'
+      }
     }
   },
   computed: {

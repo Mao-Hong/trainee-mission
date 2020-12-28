@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="特殊资源">
+  <el-form-item label="特殊资源" prop="res" :rules="resRules">
     <el-radio-group v-model="resourceValue">
       <el-radio
         v-for="list in lists"
@@ -20,7 +20,12 @@ export default {
       lists: [
         { label: '线上品牌商赞助', value: 'radio1' },
         { label: '线下场地免费', value: 'radio2' }
-      ]
+      ],
+      resRules: {
+        required: true,
+        message: '请选择活动资源',
+        trigger: 'change'
+      }
     }
   },
   props: {

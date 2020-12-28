@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="活动形式">
+  <el-form-item label="活动形式" prop="form" :rules="formRules">
     <el-input type="textarea" v-model="descValue"></el-input>
   </el-form-item>
 </template>
@@ -8,7 +8,12 @@
 export default {
   data () {
     return {
-      desc: ''
+      desc: '',
+      formRules: {
+        required: true,
+        message: '请填写活动形式',
+        trigger: 'blur'
+      }
     }
   },
   props: {
