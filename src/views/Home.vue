@@ -1,13 +1,13 @@
 <template>
-  <el-form class="home" label-width="80px" :model="formData">
+  <el-form ref="form" class="home" label-width="80px" :model="formData">
     <activityName :value="formData.name" @change="nameChange"  />
     <activityArea :value="formData.area" @change="areaChange"/>
-    <activityTime :value="formData.time" @change="timeChange"/>
+    <activityTime :dateValue="formData.date1" :timeValue="formData.date2" @timeChange="timeChange" @dateChange="dateChange"/>
     <delivery :value="formData.delive" @change="deliveChange"/>
     <activityProperty :value="formData.property" @change="propertyChange"/>
     <resource :value="formData.res" @change="resChange"/>
     <activityForm :value="formData.form" @change="formChange"/>
-    <activityButton @onSubmit="buttonSumit"/>
+    <activityButton @onSubmit="buttonSumit" @onReset="buttonReset" />
   </el-form>
 </template>
 
@@ -38,20 +38,40 @@ export default {
       formData: {
         name: '',
         area: '',
-        time: {
-          date: '',
-          time: ''
-        },
+        date1: '',
+        date2: '',
         delive: false,
         property: [],
         res: '',
         form: ''
-      }
+      },
+      options: [
+        {
+          type: 'input',
+          label: '名称',
+          prop: 'name'
+        },
+        {
+          type: 'input',
+          label: '名称',
+          prop: 'name2'
+        }
+      ]
     }
   },
   methods: {
     buttonSumit () {
-      console.log(this.formData)
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          console.log(this.formData)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    buttonReset () {
+      this.$refs.form.resetFields()
     },
     nameChange (val) {
       this.formData.name = val
@@ -59,9 +79,15 @@ export default {
     areaChange (val) {
       this.formData.area = val
     },
-    timeChange (val, type) {
-      this.formData.time[type] = val
-      // 当参数可以作为类型进行判断时，可采用“需要改变的值[类型参数]”形式
+    // timeChange (val, type) {
+    //   this.formData.time[type] = val
+    //   // 当参数可以作为类型进行判断时，可采用“需要改变的值[类型参数]”形式
+    // },
+    dateChange (val) {
+      this.formData.date1 = val
+    },
+    timeChange (val) {
+      this.formData.date2 = val
     },
     deliveChange (val) {
       this.formData.delive = val
