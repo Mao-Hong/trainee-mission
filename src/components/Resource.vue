@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="特殊资源" prop="res" :rules="resRules">
+  <el-form-item :label="option.label" :prop="option.prop" :rules="option.rules">
     <el-radio-group v-model="resourceValue">
       <el-radio
         v-for="list in lists"
@@ -32,6 +32,12 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    option: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   computed: {
@@ -40,7 +46,7 @@ export default {
         return this.value
       },
       set: function (val) {
-        this.$emit('change', val)
+        this.$emit('change', val, this.option.prop)
       }
     }
   }

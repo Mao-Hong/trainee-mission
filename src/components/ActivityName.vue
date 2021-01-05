@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="活动名称" prop="name" :rules="nameRules">
+  <el-form-item :label="option.label" :prop="option.prop" :rules="option.rules">
     <el-input v-model="nameValue"></el-input>
   </el-form-item>
 </template>
@@ -19,7 +19,7 @@ export default {
         return this.value
       },
       set: function (val) {
-        this.$emit('change', val)
+        this.$emit('change', val, this.option.prop)
       }
     }
   },
@@ -27,15 +27,19 @@ export default {
     value: {
       type: String,
       default: ''
-    }
-  },
-  data () {
-    return {
-      nameRules: [
-        { required: true, message: '请输入活动名称', trigger: 'blur' },
-        { min: 3, max: 10, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-      ]
+    },
+    option: {
+      type: Object,
+      default: () => ({})
     }
   }
+  // data () {
+  //   return {
+  //     nameRules: [
+  //       { required: true, message: '请输入活动名称', trigger: 'blur' },
+  //       { min: 3, max: 10, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+  //     ]
+  //   }
+  // }
 }
 </script>

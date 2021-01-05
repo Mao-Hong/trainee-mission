@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="活动区域" prop="area" :rules="areaRules">
+  <el-form-item :label="option.label" :prop="option.prop" :rules="option.rules">
     <el-select v-model="regionValue" placeholder="请选择活动区域">
       <el-option
         v-for="item in options"
@@ -32,7 +32,7 @@ export default {
         return this.value
       },
       set: function (val) {
-        this.$emit('change', val)
+        this.$emit('change', val, this.option.prop)
       }
     }
   },
@@ -40,6 +40,12 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    option: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   }
 }

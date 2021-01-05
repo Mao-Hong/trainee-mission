@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="活动性质" prop="property" :rules="proRules">
+  <el-form-item :label="option.label" :prop="option.prop" :rules="option.rules">
     <el-checkbox-group v-model="typeValue">
       <el-checkbox
         v-for="list in checkedlist"
@@ -35,6 +35,12 @@ export default {
     value: {
       type: Array,
       default: () => []
+    },
+    option: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   computed: {
@@ -43,7 +49,7 @@ export default {
         return this.value
       },
       set: function (val) {
-        this.$emit('change', val)
+        this.$emit('change', val, this.option.prop)
       }
     }
   }

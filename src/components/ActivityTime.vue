@@ -1,9 +1,8 @@
 <template>
-  <el-form-item label="活动时间" required>
+  <el-form-item :label="option.label" required>
     <el-col>
-      <el-form-item prop="date1" :rules="dateRules">
+      <el-form-item :prop="option.date.prop" :rules="option.date.rules">
         <el-date-picker
-          type="date"
           value-format="yyyy-MM-dd"
           placeholder="选择日期"
           v-model="valueDate1">
@@ -12,7 +11,7 @@
     </el-col>
     <el-col class="line">-</el-col>
     <el-col>
-      <el-form-item prop="date2" :rules="timeRules">
+      <el-form-item :prop="option.time.prop" :rules="option.time.rules">
         <el-time-picker
           placeholder="选择时间"
           value-format="HH:mm:ss"
@@ -49,6 +48,12 @@ export default {
     timeValue: {
       type: String,
       dafault: ''
+    },
+    option: {
+      type: Object,
+      dafault: () => {
+        return {}
+      }
     }
   },
   computed: {
@@ -57,7 +62,7 @@ export default {
         return this.dateValue
       },
       set: function (val) {
-        this.$emit('dateChange', val)
+        this.$emit('change', val, this.option.date.prop)
       }
     },
     valueDate2: {
@@ -65,8 +70,7 @@ export default {
         return this.timeValue
       },
       set: function (val) {
-        debugger
-        this.$emit('timeChange', val)
+        this.$emit('change', val, this.option.time.prop)
       }
     }
   }

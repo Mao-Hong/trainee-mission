@@ -1,5 +1,5 @@
 <template>
-  <el-form-item label="即时配送" prop="delive">
+  <el-form-item :label="option.label" :prop="option.prop">
     <el-switch v-model="deliveryValue"></el-switch>
   </el-form-item>
 </template>
@@ -15,6 +15,12 @@ export default {
     value: {
       type: Boolean,
       default: true
+    },
+    option: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   computed: {
@@ -23,7 +29,7 @@ export default {
         return this.value
       },
       set: function (val) {
-        this.$emit('change', val)
+        this.$emit('change', val, this.option.prop)
       }
     }
   }

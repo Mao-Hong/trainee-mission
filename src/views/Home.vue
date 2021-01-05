@@ -1,12 +1,22 @@
 <template>
   <el-form ref="form" class="home" label-width="80px" :model="formData">
-    <activityName :value="formData.name" @change="nameChange"  />
+    <component
+      v-for="item in options"
+      :key="item.prop"
+      :is="isType(item)"
+      :value="formData[item.prop]"
+      :dateValue="item.date && formData[item.date.prop]"
+      :timeValue="item.time && formData[item.time.prop]"
+      :option="item"
+      @change="valueChange"
+    ></component>
+    <!-- <activityName :value="formData.name" @change="nameChange" />
     <activityArea :value="formData.area" @change="areaChange"/>
     <activityTime :dateValue="formData.date1" :timeValue="formData.date2" @timeChange="timeChange" @dateChange="dateChange"/>
     <delivery :value="formData.delive" @change="deliveChange"/>
     <activityProperty :value="formData.property" @change="propertyChange"/>
     <resource :value="formData.res" @change="resChange"/>
-    <activityForm :value="formData.form" @change="formChange"/>
+    <activityForm :value="formData.form" @change="formChange"/> -->
     <activityButton @onSubmit="buttonSumit" @onReset="buttonReset" />
   </el-form>
 </template>
@@ -36,34 +46,97 @@ export default {
   data () {
     return {
       formData: {
-        name: '',
-        area: '',
-        date1: '',
-        date2: '',
-        delive: false,
-        property: [],
-        res: '',
-        form: ''
       },
       options: [
         {
           type: 'input',
-          label: '名称',
-          prop: 'name'
+          label: '活动名称',
+          prop: 'name',
+          rules: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ]
         },
         {
-          type: 'input',
-          label: '名称',
-          prop: 'name2'
+          type: 'select',
+          label: '活动区域',
+          prop: 'area',
+          rules: [
+            { required: true, message: '请选择活动区域', trigger: 'change' }
+          ]
+        },
+        {
+          type: 'date',
+          label: '活动时间',
+          date: {
+            prop: 'date1',
+            rules: [
+              { required: true, message: '请选择日期', trigger: 'change' }
+            ]
+          },
+          time: {
+            prop: 'date2',
+            rules: [
+              { required: true, message: '请选择活动时间', trigger: 'change' }
+            ]
+          }
+        },
+        {
+          type: 'switch',
+          label: '即时配送',
+          prop: 'delive'
+        },
+        {
+          type: 'checkbox',
+          label: '活动性质',
+          prop: 'property',
+          rules: [
+            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+          ]
+        },
+        {
+          type: 'radio',
+          label: '特殊资源',
+          prop: 'res',
+          rules: [
+            { required: true, message: '请选择活动资源', trigger: 'change' }
+          ]
+        },
+        {
+          type: 'textarea',
+          label: '活动形式',
+          prop: 'form',
+          rules: [
+            { required: true, message: '请填写活动形式', trigger: 'blur' }
+          ]
         }
       ]
     }
   },
   methods: {
+    isType (item) {
+      if (item.type === 'input') {
+        return 'activityName'
+      } else if (item.type === 'select') {
+        return 'activityArea'
+      } else if (item.type === 'date') {
+        return 'activityTime'
+      } else if (item.type === 'switch') {
+        return 'delivery'
+      } else if (item.type === 'checkbox') {
+        return 'activityProperty'
+      } else if (item.type === 'radio') {
+        return 'resource'
+      } else if (item.type === 'textarea') {
+        return 'activityForm'
+      }
+      return ''
+    },
     buttonSumit () {
+      console.log(this.formData)
       this.$refs.form.validate((valid) => {
         if (valid) {
-          console.log(this.formData)
+          this.buttonReset()
         } else {
           console.log('error submit!!')
           return false
@@ -73,33 +146,9 @@ export default {
     buttonReset () {
       this.$refs.form.resetFields()
     },
-    nameChange (val) {
-      this.formData.name = val
-    },
-    areaChange (val) {
-      this.formData.area = val
-    },
-    // timeChange (val, type) {
-    //   this.formData.time[type] = val
-    //   // 当参数可以作为类型进行判断时，可采用“需要改变的值[类型参数]”形式
-    // },
-    dateChange (val) {
-      this.formData.date1 = val
-    },
-    timeChange (val) {
-      this.formData.date2 = val
-    },
-    deliveChange (val) {
-      this.formData.delive = val
-    },
-    propertyChange (val) {
-      this.formData.property = val
-    },
-    resChange (val) {
-      this.formData.res = val
-    },
-    formChange (val) {
-      this.formData.form = val
+    valueChange (val, prop) {
+      this.$set(this.formData, prop, val)
+      this.formData[prop] = val
     }
   }
 }
